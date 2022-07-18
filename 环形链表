@@ -6,7 +6,7 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-class Solution {//快慢指针思想
+class Solution {//快慢指针思想判断链表是否有环
 public:
     bool hasCycle(ListNode *head) {
        if(head==NULL){
