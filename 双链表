@@ -1,0 +1,99 @@
+class MyLinkedList {
+public:
+struct Node {
+        int val;
+        Node* prev;
+        Node* next;
+        Node(int x) : val(x), prev(nullptr), next(nullptr) {}//表示的含义就是节点数值为x，指针为空（初始化一个新节点）
+    };
+    MyLinkedList() {
+        head = new Node(0);
+        tail = new Node(0);
+        length = 0;
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int index) {
+        if (index < 0 || index >= length) return -1;
+        Node* cur = head;
+        if (index + 1 < length - index)
+            for (int i = 0; i < index + 1; i++)cur = cur->next;
+        else {
+            cur = tail;
+            for (int i = 0; i < length - index; i++)cur = cur->prev;
+        }
+        return cur->val;
+    }
+
+    void addAtHead(int val) {
+        Node* pred = head, * succ = head->next;
+        Node* cur = new Node(val);
+        cur->prev = pred;
+        cur->next = succ;
+        pred->next = cur;
+        succ->prev = cur;
+        length++;
+    }
+
+    void addAtTail(int val) {
+        Node* succ = tail, * pred = tail->prev;
+        Node* cur = new Node(val);
+        cur->prev = pred;
+        cur->next = succ;
+        succ->prev = cur;
+        pred->next = cur;
+        length++;
+    }
+
+    void addAtIndex(int index, int val) {
+        if (index <= 0) {
+            addAtHead(val);
+        }
+        else if (index > length) return;
+        else if (index == length) {
+            addAtTail(val);
+        }
+        else {
+            Node* pred, * succ;
+            if (index < length - index) {
+                pred = head;
+                for (int i = 0; i < index; i++)pred = pred->next;
+                succ = pred->next;
+            }
+            else {
+                succ = tail;
+                for (int i = 0; i < length - index; i++)succ = succ->prev;
+                pred = succ->prev;
+            }
+            Node* cur = new Node(val);
+            cur->next = succ;
+            cur->prev = pred;
+            succ->prev = cur;
+            pred->next = cur;
+            length++;
+        }
+    }
+
+        void deleteAtIndex(int index) {
+            if (index < 0 || index >= length) return;
+            Node* pred, * succ;
+            if (index < length - index)
+            {
+                pred = head;
+                for (int i = 0; i < index; i++) { pred = pred->next; }
+                succ = pred->next->next;
+            }
+            else {
+                succ = tail;
+                for (int i = 0; i < length - index - 1; i++) { succ = succ->prev; }
+                pred = succ->prev->prev;
+            }
+            length--;
+            pred->next = succ;
+            succ->prev = pred;
+        }
+    private:
+        int length;
+        Node* head, * tail;
+    };
